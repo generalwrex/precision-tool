@@ -4,18 +4,3 @@ Added: Transparency when selecting, to make entire contraption option more usefu
 Updated: Repair mode now temporarily disables collisions on a contraption.  Use at own risk, but might work if something is flailing.
 Moved: Constraint removal to it's own mode.
 Changed: Various message changes.
-
-
-
-
-
-Precision 0.97:
-Changed: Renamed 'Precision Tool' to 'Precision' in menu for consistency.
-Changed: Physics disable, prop shadow etc now only works in apply mode.  Less accidents and clutter in other modes.
-Added: PushPull / snap distance now goes to 4 decimal places (To allow for 11.8625 distances etc)
-Fixed: Rotating in other axies (Holding Reload or Altfire while rotating) should be a lot more reliable now.
-Fixed: Constraint removal lua error fixed.
-Fixed: Constraint removal enabled no longer messes with apply/rotate/move modes where it doesn't do anything.
-Changed: Custom listbox for tool mode, now doesn't have arbitrary second title so can fit descriptions/hints in too.
-Changed: Minor renames, hopefully simpler to new users now.  'Nudge' is now 'push/pull', 'offset' is now 'snap distance', 'prop' is now 'target' or 'item'
-Removed: 'move/rotate' options from parent mode.  Less worry about left-over settings from other modes now.
