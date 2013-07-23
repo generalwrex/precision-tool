@@ -11,7 +11,7 @@
 		"*.txt",
 		".git*",
 		"README.md",
-		"updateshop.bat",
+		"precision-tool.gma",
 		"precision.jpg"
 	]
 }
