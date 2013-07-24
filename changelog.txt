@@ -1,0 +1,6 @@
+Precision 0.98:
+Fixed: Crash bug with 0 rotation snap.
+Added: Transparency when selecting, to make entire contraption option more useful.
+Updated: Repair mode now temporarily disables collisions on a contraption.  Use at own risk, but might work if something is flailing.
+Moved: Constraint removal to it's own mode.
+Changed: Various message changes.

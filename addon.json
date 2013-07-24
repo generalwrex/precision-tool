@@ -1,0 +1,17 @@
+{
+	"title"		:	"Precision Tool",
+	"type"		:	"tool",
+	"tags"		:	[ "build", "fun" ],
+	"description":	"garrysmod addon to allow exact movement of objects for accurate building. Push/pull, rotate, and snap props together at specific distances.",
+	"ignore"	:
+	[
+		"*.psd",
+		"*.vcproj",
+		"*.svn*",
+		"*.txt",
+		".git*",
+		"README.md",
+		"precision-tool.gma",
+		"precision.jpg"
+	]
+}
