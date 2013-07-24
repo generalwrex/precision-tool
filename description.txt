@@ -1,3 +1,0 @@
-Formerly 'Easy Precision', this tool allows exact movement of objects for accurate building. Push/pull, rotate, and snap props together at specific distances. New features in 0.96:
-Simplified menu by default - Change user level under general options to see more settings.
-Added experimental repair mode to re-weld contraptions.
