@@ -660,7 +660,9 @@ function TOOL:LeftClick( trace )
 				end
 
 				Phys:EnableMotion( false ) //else it drifts
-				local rotation = self:GetClientNumber( "rotation" )
+				
+				local rotation = math.Clamp(self:GetClientNumber( "rotation" ),0.02,90)
+				
 				if ( inuse == nil || inuse == self:GetOwner():GetName() ) then
 					inuse = self:GetOwner():GetName()
 					axis = trace.HitNormal
@@ -749,7 +751,7 @@ function TOOL:LeftClick( trace )
 			undo.Finish()
 			end
 
-			local rotation = self:GetClientNumber( "rotation" )
+			local rotation = math.Clamp(self:GetClientNumber( "rotation" ),0.02,90)
 			if ( (self:GetClientNumber( "rotate" ) == 1 && mode != 1) || mode == 2) then//Set axies for rotation mode directions
 				if ( inuse == nil || inuse == self:GetOwner():GetName() ) then
 					inuse = self:GetOwner():GetName()
@@ -1004,7 +1006,7 @@ function TOOL:Think()
 
 			local cmd = self:GetOwner():GetCurrentCommand()
 
-			local rotation		= self:GetClientNumber( "rotation" )
+			local rotation		= math.Clamp(self:GetClientNumber( "rotation" ),0.02,90)
 			if ( rotation < 0.02 ) then rotation = 0.02 end
 			local degrees = cmd:GetMouseX() * 0.02
 
