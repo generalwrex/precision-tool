@@ -531,7 +531,7 @@ function TOOL:DoMove()
 	Phys1:SetAngles( TargetAngle )
 
 
-	local NewOffset = math.Clamp(math.Clamp( self:GetClientNumber( "offset" ), -5000, 5000 ), -5000, 5000)
+	local NewOffset = math.Clamp( self:GetClientNumber( "offset" ), -5000, 5000 )
 	local offsetpercent		= self:GetClientNumber( "offsetpercent" ) == 1
 	if ( offsetpercent ) then
 		local  Ent2  = self:GetEnt(2)
@@ -827,7 +827,7 @@ function TOOL:Think()
 	if self:NumObjects() == 1 && mode != 2 then
 		if ( (self:GetClientNumber( "move" ) == 1 && mode >= 3) || mode == 3 ) then
 			if ( mode <= 8 ) then//no move = no ghost in parent mode
-				local offset = math.Clamp( math.Clamp( self:GetClientNumber( "offset" ), -5000, 5000 ), -5000, 5000 )
+				local offset = math.Clamp( self:GetClientNumber( "offset" ), -5000, 5000 )
 				self:UpdateCustomGhost( self.GhostEntity, self:GetOwner(), offset )
 			end
 		end
