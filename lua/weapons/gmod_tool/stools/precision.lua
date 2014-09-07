@@ -61,15 +61,15 @@ TOOL.ClientConVar[ "rotateundo" ]		= "1"
 function TOOL:DoParent( Ent1, Ent2 )
 	local TempEnt = Ent2
 	if !(Ent1 && Ent1:IsValid() && Ent1:EntIndex() != 0) then
-		self:SendMessage( "Oops, First Target was world or somthing invalid" )
+		self:SendMessage( "Oops, First Target was world or something invalid" )
 		return
 	end
 	if !(Ent2 && Ent2:IsValid() && Ent2:EntIndex() != 0) then
-		self:SendMessage( "Oops, Second Target was world or somthing invalid" )
+		self:SendMessage( "Oops, Second Target was world or something invalid" )
 		return
 	end
 	if ( Ent1 == Ent2 ) then
-		self:SendMessage( "Oops, Can't parent somthing to itself" )
+		self:SendMessage( "Oops, Can't parent something to itself" )
 		return
 	end
 	Ent1:SetMoveType(MOVETYPE_NONE)
@@ -433,10 +433,12 @@ function TOOL:StartRotate()
 	end
 	
 	if ( self:GetClientNumber( "rotateundo" )) then
-		undo.Create("Precision_Rotate")
-			undo.SetPlayer(self:GetOwner())
-			undo.AddFunction( MoveUndo, Ent, oldposu, oldangles )
-		undo.Finish()
+		if SERVER then
+			undo.Create("Precision_Rotate")
+				undo.SetPlayer(self:GetOwner())
+				undo.AddFunction( MoveUndo, Ent, oldposu, oldangles )
+			undo.Finish()
+		end
 	end
 
 	Phys:EnableMotion( false ) //else it drifts
@@ -529,7 +531,7 @@ function TOOL:DoMove()
 	Phys1:SetAngles( TargetAngle )
 
 
-	local NewOffset = self:GetClientNumber( "offset" )
+	local NewOffset = math.Clamp(math.Clamp( self:GetClientNumber( "offset" ), -5000, 5000 ), -5000, 5000)
 	local offsetpercent		= self:GetClientNumber( "offsetpercent" ) == 1
 	if ( offsetpercent ) then
 		local  Ent2  = self:GetEnt(2)
@@ -825,14 +827,14 @@ function TOOL:Think()
 	if self:NumObjects() == 1 && mode != 2 then
 		if ( (self:GetClientNumber( "move" ) == 1 && mode >= 3) || mode == 3 ) then
 			if ( mode <= 8 ) then//no move = no ghost in parent mode
-				local offset = self:GetClientNumber( "offset" )
+				local offset = math.Clamp( math.Clamp( self:GetClientNumber( "offset" ), -5000, 5000 ), -5000, 5000 )
 				self:UpdateCustomGhost( self.GhostEntity, self:GetOwner(), offset )
 			end
 		end
 	else
 		local rotate = (self:GetClientNumber( "rotate" ) == 1 && mode != 1) || mode == 2
 		if ( SERVER && rotate && mode <= 8 ) then
-			local offset = self:GetClientNumber( "offset" )
+			local offset = math.Clamp( self:GetClientNumber( "offset" ), -5000, 5000 )
 
 			local Phys1 = self:GetPhys(1)
 
@@ -1366,8 +1368,8 @@ if CLIENT then
 					Command = "precision_width",
 					Description = "Width of the slider black line (0 = invisible)"}	 )
 
-			Panel:AddControl( "Checkbox", { Label = "Turn Off Minor Slider Stabilisation", Command = "precision_disablesliderfix", Description = "Fix being seperate X/Y/Z advanced ballsocket locks between the props.  This stops most spaz caused by rotation, but not spaz caused by displacement." } )
-			Panel:AddControl( "Label", { Text = "Stabilisation is seperate X/Y/Z adv. ballsockets; it makes it far less prone to rotation triggered spaz, but the difference is only noticible sometimes as it's still just as prone to spaz caused by drifting.", Description	= "Due to lack of working descriptions at time of coding" }  )
+			Panel:AddControl( "Checkbox", { Label = "Turn Off Minor Slider Stabilisation", Command = "precision_disablesliderfix", Description = "Fix being separate X/Y/Z advanced ballsocket locks between the props.  This stops most spaz caused by rotation, but not spaz caused by displacement." } )
+			Panel:AddControl( "Label", { Text = "Stabilisation is separate X/Y/Z adv. ballsockets; it makes it far less prone to rotation triggered spaz, but the difference is only noticeable sometimes as it's still just as prone to spaz caused by drifting.", Description	= "Due to lack of working descriptions at time of coding" }  )
 		end
 
 		if ( mode == 9 ) then //parent
@@ -1376,14 +1378,14 @@ if CLIENT then
 
 			Panel:AddControl( "Label", { Text = "Parented objects are most useful for: Adding detail to moving objects without creating extra physics lag.  Things like houses that you want to move (though you can only safely walk on parented objects when they are still.)", Description	= "Due to lack of working descriptions at time of coding" }  )
 
-			Panel:AddControl( "Label", { Text = "Possible issues:  Remove constraints first to avoid spaz. Duplicating or such may cause the collision model to become seperated.  Best to test it if in doubt.", Description	= "Why must labels cause menu flicker? D:" }  )
+			Panel:AddControl( "Label", { Text = "Possible issues:  Remove constraints first to avoid spaz. Duplicating or such may cause the collision model to become separated.  Best to test it if in doubt.", Description	= "Why must labels cause menu flicker? D:" }  )
 		end
 		
 		if ( mode == 10 ) then //repair
 			Panel:AddControl( "Label", { Text = "Repair mode", Description	= "" }  )
 			Panel:AddControl( "Label", { Text = "Usage: When a contraption is going crazy, colliding, making rubbing noises.", Description	= "" }  )
 			Panel:AddControl( "Label", { Text = "What it does: Temporarily toggles collisions, allowing things that are bent out of shape to pop back.", Description	= "" }  )
-			Panel:AddControl( "Label", { Text = "Warning: No guarentees.  This may turn things inside-out or make things worse depending on the situation.", Description	= "" }  )
+			Panel:AddControl( "Label", { Text = "Warning: No guarantees.  This may turn things inside-out or make things worse depending on the situation.", Description	= "" }  )
 		end
 		if ( mode == 11 ) then //removal
 			Panel:AddControl( "Label", { Text = "This mode will remove:", Description	= "" }  )
