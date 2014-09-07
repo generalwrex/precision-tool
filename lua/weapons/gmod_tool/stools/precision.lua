@@ -1214,7 +1214,7 @@ if CLIENT then
 			Panel:AddControl( "Slider",  { Label	= "Snap Distance",
 					Type	= "Float",
 					Min		= 0,
-					Max		= 100,
+					Max		= 10,
 					Command = "precision_offset",
 					Description = "Distance offset between joined props.  Type in negative to inset when moving."}	 )
 			Panel:AddControl( "Checkbox", { Label = "Snap distance as Percent (%) of target's depth", Command = "precision_offsetpercent", Description = "Unchecked = Exact units, Checked = takes % of width from second prop" } )
@@ -1268,7 +1268,7 @@ if CLIENT then
 				Panel:AddControl( "Slider",  { Label	= "Force Breakpoint",
 						Type	= "Float",
 						Min		= 0.0,
-						Max		= 50000,
+						Max		= 5000,
 						Command = "precision_forcelimit",
 						Description = "Applies to most constraint modes" }	 )
 			end
@@ -1278,7 +1278,7 @@ if CLIENT then
 				Panel:AddControl( "Slider",  { Label	= "Torque Breakpoint",
 						Type	= "Float",
 						Min		= 0.0,
-						Max		= 50000,
+						Max		= 5000,
 						Command = "precision_torquelimit",
 						Description = "Breakpoint of turning/rotational force"}	 )
 			end
