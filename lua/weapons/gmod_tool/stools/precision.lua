@@ -1043,7 +1043,7 @@ end
 
 if CLIENT then
 
-	language.Add( "Tool.precision.name", "Precision Tool 0.98e" )
+	language.Add( "Tool.precision.name", "Precision Tool 0.99 (rewrite)" )
 	language.Add( "Tool.precision.desc", "Accurately moves/constrains objects" )
 	language.Add( "Tool.precision.0", "Primary: Move/Apply | Secondary: Push | Reload: Pull" )
 	language.Add( "Tool.precision.1", "Target the second item. If enabled, this will move the first item.  (Swap weps to cancel)" )
