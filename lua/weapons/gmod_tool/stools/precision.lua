@@ -76,7 +76,7 @@ function TOOL:DoParent( Ent1, Ent2 )
 	local disablephysgun = self:GetClientNumber( "allowphysgun" ) == 0
 	Ent1.PhysgunDisabled = disablephysgun
 	Ent1:SetUnFreezable( disablephysgun )
-	local Phys1 = Ent1:GetPhysicsObjecticsObject()
+	local Phys1 = Ent1:GetPhysicsObject()
 	if Phys1:IsValid() then
 		Phys1:EnableCollisions( false )
 	end
@@ -106,7 +106,7 @@ function TOOL:UndoParent( Ent1 )
 	Ent1:SetMoveType(MOVETYPE_VPHYSICS)
 	Ent1.PhysgunDisabled = false
 	Ent1:SetUnFreezable( false )
-	local Phys1 = Ent1:GetPhysicsObjecticsObject()
+	local Phys1 = Ent1:GetPhysicsObject()
 	if Phys1:IsValid() then
 		Phys1:EnableCollisions( true )
 		Phys1:Wake()
@@ -115,7 +115,7 @@ function TOOL:UndoParent( Ent1 )
 end
 
 function TOOL:DoApply(CurrentEnt, FirstEnt, autorotate, nocollideall, ShadowDisable )
-	local CurrentPhys = CurrentEnt:GetPhysicsObjecticsObject()
+	local CurrentPhys = CurrentEnt:GetPhysicsObject()
 	
 	//local col = CurrentEnt:GetCollisionGroup()
 	//col = 19
@@ -177,9 +177,9 @@ function TOOL:UndoRepairToggle()
 	for key,CurrentEnt in pairs(self.TaggedEnts) do
 		if ( CurrentEnt and CurrentEnt:IsValid() ) then
 			if !(CurrentEnt == Ent2 ) then
-				local CurrentPhys = CurrentEnt:GetPhysicsObjecticsObject()
+				local CurrentPhys = CurrentEnt:GetPhysicsObject()
 				if ( CurrentPhys:IsValid() && !CurrentEnt:GetParent():IsValid() ) then//parent?
-					if ( CurrentEnt:GetPhysicsObjecticsObjectCount() < 2 ) then //not a ragdoll
+					if ( CurrentEnt:GetPhysicsObjectCount() < 2 ) then //not a ragdoll
 						if ( CurrentEnt:GetCollisionGroup() == COLLISION_GROUP_WORLD ) then
 							CurrentEnt:SetCollisionGroup( COLLISION_GROUP_NONE )
 						elseif ( CurrentEnt:GetCollisionGroup() == COLLISION_GROUP_NONE ) then
@@ -235,7 +235,7 @@ function TOOL:DoConstraint(mode)
 		Bone2 = self:GetBone(2)
 		LPos2 = self:GetLocalPos(2)
 	end
-	local Phys1 = self:GetPhysicsObject(1)
+	local Phys1 = self:GetPhys(1)
 	
 	local NumApp = 0
 	
@@ -243,9 +243,9 @@ function TOOL:DoConstraint(mode)
 	for key,CurrentEnt in pairs(self.TaggedEnts) do
 		if ( CurrentEnt and CurrentEnt:IsValid() ) then
 			if !(CurrentEnt == Ent2 ) then
-				local CurrentPhys = CurrentEnt:GetPhysicsObjecticsObject()
+				local CurrentPhys = CurrentEnt:GetPhysicsObject()
 				if ( CurrentPhys:IsValid() && !CurrentEnt:GetParent():IsValid() ) then//parent?
-					if ( CurrentEnt:GetPhysicsObjecticsObjectCount() < 2 ) then //not a ragdoll
+					if ( CurrentEnt:GetPhysicsObjectCount() < 2 ) then //not a ragdoll
 						if (  util.tobool( nocollide ) && (mode == 1 || mode == 3)) then // not weld/axis/ballsocket or single application
 							local constraint = constraint.NoCollide(CurrentEnt, Ent2, 0, Bone2)
 						end
@@ -421,7 +421,7 @@ end
 
 function TOOL:StartRotate()
 	local Ent = self:GetEnt(1)
-	local Phys = self:GetPhysicsObject(1)
+	local Phys = self:GetPhys(1)
 	local oldposu = Ent:GetPos()
 	local oldangles = Ent:GetAngles()
 
@@ -440,8 +440,8 @@ function TOOL:StartRotate()
 			undo.Finish()
 		end
 	end
-
-	if ( IsValid( Phys ) ) then
+	
+	if IsValid( Phys ) then
 		Phys:EnableMotion( false ) //else it drifts
 	end
 	
@@ -465,7 +465,7 @@ end
 function TOOL:DoMove()
 	// Get information we're about to use
 	local Norm1, Norm2 = self:GetNormal(1),   self:GetNormal(2)
-	local Phys1, Phys2 = self:GetPhysicsObject(1),     self:GetPhysicsObject(2)
+	local Phys1, Phys2 = self:GetPhys(1),     self:GetPhys(2)
 	
 	local Ang1, Ang2 = Norm1:Angle(), (Norm2 * -1):Angle()
 	if self:GetClientNumber( "autorotate" ) == 1 then
@@ -596,7 +596,7 @@ function TOOL:ClearSelection()
 		local color
 		for key,CurrentEnt in pairs(self.TaggedEnts) do
 			if ( CurrentEnt and CurrentEnt:IsValid() ) then
-				local CurrentPhys = CurrentEnt:GetPhysicsObjecticsObject()
+				local CurrentPhys = CurrentEnt:GetPhysicsObject()
 				if ( CurrentPhys:IsValid() ) then
 					self:ToggleColor(CurrentEnt)
 				end
@@ -617,7 +617,7 @@ function TOOL:SelectEnts(StartEnt, AllConnected)
 		GetAllEnts(StartEnt, self.TaggedEnts, EntsTab, ConstsTab)
 		for key,CurrentEnt in pairs(self.TaggedEnts) do
 			if ( CurrentEnt and CurrentEnt:IsValid() ) then
-				local CurrentPhys = CurrentEnt:GetPhysicsObjecticsObject()
+				local CurrentPhys = CurrentEnt:GetPhysicsObject()
 				if ( CurrentPhys:IsValid() ) then
 					self:ToggleColor(CurrentEnt)
 				end
@@ -627,7 +627,7 @@ function TOOL:SelectEnts(StartEnt, AllConnected)
 		self:SendMessage( NumApp .. " objects selected." )
 	else
 		if ( StartEnt and StartEnt:IsValid() ) then
-			local CurrentPhys = StartEnt:GetPhysicsObjecticsObject()
+			local CurrentPhys = StartEnt:GetPhysicsObject()
 			if ( CurrentPhys:IsValid() ) then
 				table.insert(self.TaggedEnts, StartEnt)
 				self:ToggleColor(StartEnt)
@@ -642,7 +642,7 @@ function TOOL:LeftClick( trace )
 	local mode = self:GetClientNumber( "mode" )
 	local moving = ( mode == 3 || (self:GetClientNumber( "move" ) == 1 && mode >= 3 && mode <= 8 ) )
 	local rotating = ( self:GetClientNumber( "rotate" ) == 1 )
-	local Phys = trace.Entity:GetPhysicsObjecticsObjectNum( trace.PhysicsBone )
+	local Phys = trace.Entity:GetPhysicsObjectNum( trace.PhysicsBone )
 
 	
 	if ( stage == 0 ) then//first click - choose a target.
@@ -839,7 +839,7 @@ function TOOL:Think()
 		if ( SERVER && rotate && mode <= 8 ) then
 			local offset = math.Clamp( self:GetClientNumber( "offset" ), -5000, 5000 )
 
-			local Phys1 = self:GetPhysicsObject(1)
+			local Phys1 = self:GetPhys(1)
 
 			local cmd = self:GetOwner():GetCurrentCommand()
 
@@ -915,7 +915,7 @@ end
 
 function TOOL:Nudge( trace, direction )
 	if (!trace.Entity:IsValid() || trace.Entity:IsPlayer() ) then return false end
-	local Phys1 = trace.Entity:GetPhysicsObjecticsObjectNum( trace.PhysicsBone )
+	local Phys1 = trace.Entity:GetPhysicsObjectNum( trace.PhysicsBone )
 	local offsetpercent		= self:GetClientNumber( "nudgepercent" ) == 1
 	local offset		= self:GetClientNumber( "nudge", 100 )
 	local max = 8192
@@ -955,7 +955,7 @@ function TOOL:Nudge( trace, direction )
 		GetAllEnts(trace.Entity, TargetEnts, EntsTab, ConstsTab)
 		for key,CurrentEnt in pairs(TargetEnts) do
 			if ( CurrentEnt and CurrentEnt:IsValid() ) then
-				local CurrentPhys = CurrentEnt:GetPhysicsObjecticsObject()
+				local CurrentPhys = CurrentEnt:GetPhysicsObject()
 				if ( CurrentPhys:IsValid() ) then
 
 					/*if ( self:GetClientNumber( "nudgeundo" ) == 1 ) then
