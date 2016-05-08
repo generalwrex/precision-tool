@@ -440,8 +440,11 @@ function TOOL:StartRotate()
 			undo.Finish()
 		end
 	end
-
-	Phys:EnableMotion( false ) //else it drifts
+	
+	if IsValid( Phys ) then
+		Phys:EnableMotion( false ) //else it drifts
+	end
+	
 	local rotation = self:GetClientNumber( "rotation" )
 	if ( rotation < 0.02 ) then rotation = 0.02 end
 	self.axis = self:GetNormal(1)
