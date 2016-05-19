@@ -12,6 +12,6 @@
 		".git*",
 		"README.md",
 		"precision-tool.gma",
-		"precision.jpg"
+		"*.jpg"
 	]
 }
